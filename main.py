@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
+from geopy.geocoders import Nominatim
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib import ticker
 from matplotlib.gridspec import GridSpec
-
+ 
 def preprocess_bls(bls_df):
     bls_df = bls_df.replace('*','')
     bls_df = bls_df.replace('**','')
@@ -35,10 +36,15 @@ def preprocess_bls(bls_df):
 
 def preprocess_bea(bea_df):
     bea_df = bea_df.iloc[2:]
-    bea_df.drop('GeoFips', axis=1)
+    bea_df = bea_df.drop('GeoFips', axis=1)
     bea_df = bea_df.rename(columns={'GeoName': 'AREA_TITLE', '2020': 'RPP'})
     bea_df['AREA_TITLE'] = bea_df['AREA_TITLE'].str.replace(' \(Metropolitan Statistical Area\)','', regex=True)
     return bea_df
+
+bls_df = pd.read_csv('bls.csv', dtype = {'AREA': 'str', 'AREA_TYPE': 'str', 'OWN_CODE': 'str', 'NAICS': 'str'}, low_memory=False)
+bls_df = preprocess_bls(bls_df)
+bea_df = pd.read_csv('bea.csv', header=3, engine='python', skipfooter=3)
+bea_df = preprocess_bea(bea_df)
 
 def add_rpp(bls_df, bea_df):
     merged_df = pd.merge(bls_df, bea_df, on ='AREA_TITLE', how ='left')
@@ -59,6 +65,9 @@ def add_rpp(bls_df, bea_df):
                     merged_df.at[index1,'RPP'] = row2['RPP']
     return merged_df
 
+#def add_coordinates(bls_df):
+    
+
 def get_top_metropolitan_areas(occupation, bls_df, bea_df):
     bls_df = bls_df.query('AREA_TYPE == "4" and OCC_TITLE == "{}"'.format(occupation))
     bls_df = bls_df[['AREA_TITLE', 'TOT_EMP', 'LOC_QUOTIENT', 'A_MEAN', 'A_MEDIAN']]
@@ -74,7 +83,15 @@ def get_top_metropolitan_areas(occupation, bls_df, bea_df):
     merged_df['AVERAGE_Z_SCORE'] = merged_df[[column_name+'_Z_SCORE' for column_name in column_names]].mean(axis=1)
     for column_name in column_names:
         merged_df = merged_df.drop(column_name+'_Z_SCORE', axis=1)
-    return merged_df
+    #return merged_df
+    for index, row in bls_df.iterrows():
+        cities, states = row['AREA_TITLE'].split(', ')
+        first_city = cities.split('-')[0]
+        first_state = states.split('-')[0]
+        loc = Nominatim(user_agent='GetLoc')
+        getLoc = loc.geocode(first_city+', '+first_state)        
+        print(first_city, first_state, getLoc.latitude, getLoc.longitude)
+
 
 @ticker.FuncFormatter
 def kmbt_format(num, pos):
@@ -93,7 +110,6 @@ def visualize_top_metropolitan_areas(occupation, bls_df, bea_df):
              'RPP_ADJUSTED_A_MEAN': 'RPP-Adjusted Mean Annual Wage',
              'RPP_ADJUSTED_A_MEDIAN': 'RPP-Adjusted Annual Median Wage'}
     df = get_top_metropolitan_areas(occupation, bls_df, bea_df)
-    
     fig = plt.figure(tight_layout=True)
     gs = GridSpec(5, 2, figure=fig)
     fig.set_figheight(13)
@@ -111,18 +127,16 @@ def visualize_top_metropolitan_areas(occupation, bls_df, bea_df):
         
     axis = fig.add_subplot(gs[3:, :])
     ranking = df[['AREA_TITLE', 'AVERAGE_Z_SCORE']].sort_values('AVERAGE_Z_SCORE', ascending = False)
-    sns.barplot(x="AVERAGE_Z_SCORE", y="AREA_TITLE", data=ranking.head(10), ax = axis, palette = sns.color_palette('Blues_r', 20))
+    sns.barplot(x='AVERAGE_Z_SCORE', y='AREA_TITLE', data=ranking.head(10), ax = axis, palette = sns.color_palette('Blues_r', 20))
     sns.despine(left=True, bottom=True)
     axis.set(title = 'Best Metropolitan Areas Overall', xlabel='Average Z-Score', ylabel='')
     
     fig.suptitle('Best Metropolitan Areas For '+occupation)
     plt.show()
 
-bls_df = pd.read_csv('bls.csv', dtype = {'AREA': 'str', 'AREA_TYPE': 'str', 'OWN_CODE': 'str', 'NAICS': 'str'}, low_memory=False)
-bls_df = preprocess_bls(bls_df)
-bea_df = pd.read_csv('bea.csv', header=3, engine='python', skipfooter=3)
-bea_df = preprocess_bea(bea_df)
 
+get_top_metropolitan_areas('Data Scientists', bls_df, bea_df)
+'''
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 
@@ -132,8 +146,8 @@ def generate_figures(occupation, bls_df, bea_df):
     df = get_top_metropolitan_areas(occupation, bls_df, bea_df)
     ranking = df[['AREA_TITLE', 'AVERAGE_Z_SCORE']].sort_values('AVERAGE_Z_SCORE', ascending = False)
     figs = []
-    fig = px.bar(ranking.head(10), x='AVERAGE_Z_SCORE', y='AREA_TITLE',  height = 500, labels={'AREA_TITLE':'Metropolitan Area', 'AVERAGE_Z_SCORE': 'Average Z-Score'})
-    fig.update_layout(yaxis={'categoryorder':'total ascending'}, title='Highest Average Z-Score', title_x = 0.5, xaxis_title='', yaxis_title = '')
+    fig = px.bar(ranking.head(10), x='AVERAGE_Z_SCORE', y='AREA_TITLE',  height = 500)
+    fig.update_layout(yaxis={'categoryorder':'array', 'categoryarray':ranking.iloc[::-1]['AREA_TITLE']}, title='Highest Average Z-Score', title_x = 0.5, xaxis_title='', yaxis_title = '')
     fig.update_traces(hovertemplate='Metropolitan area: %{y} <br>Average z-score: %{x}')
     fig.update_layout(
         xaxis = dict(ticks = 'outside', tickcolor='white', ticklen=5),
@@ -149,7 +163,7 @@ def generate_figures(occupation, bls_df, bea_df):
             'RPP_ADJUSTED_A_MEDIAN': 'RPP-Adjusted Annual Median Wage'}
     for statistic in names:
         ranking = df[['AREA_TITLE', statistic]].sort_values(statistic, ascending = False)
-        fig = px.bar(ranking.head(5), x=statistic, y='AREA_TITLE', height = 300, labels={'AREA_TITLE':'Metropolitan Area', statistic: names[statistic]})
+        fig = px.bar(ranking.head(5), x=statistic, y='AREA_TITLE', height = 300)
         fig.update_layout(yaxis={'categoryorder':'total ascending'}, title='Highest '+names[statistic], title_x = 0.5, xaxis_title='', yaxis_title = '')
         fig.update_traces(hovertemplate='Metropolitan area: %{y} <br>'+names[statistic].capitalize()+': %{x}')
         fig.update_layout(
@@ -177,13 +191,12 @@ def update_output(value, bls_df = bls_df, bea_df = bea_df):
     figs = generate_figures(value, bls_df, bea_df)
     return figs[0], figs[1], figs[3], figs[5], figs[2], figs[4], figs[6]
 
-
-figs = generate_figures('All Occupations', bls_df, bea_df)
+figs = generate_figures('Mathematicians', bls_df, bea_df)
 app.layout = html.Div([
     html.Div([
         html.Div(children=[
             html.H1(children = 'Best Metropolitan Areas for', style = {'font-family':'arial', 'margin-right':'0.67em', 'font-weight': 'normal', 'font-size': 16}),
-            dcc.Dropdown(get_occupations(bls_df), 'Data Scientists', style = {'font-family':'arial', 'flex': 1}, id='dropdown')
+            dcc.Dropdown(get_occupations(bls_df), 'Mathematicians', style = {'font-family':'arial', 'flex': 1}, id='dropdown')
         ], style={'display': 'flex', 'flex-direction': 'row', 'align-items': 'center', 'margin-bottom': 50}),
         dcc.Graph(figure=figs[0], id='overall'),
         html.Div([
@@ -202,4 +215,4 @@ app.layout = html.Div([
 ])
 
 if __name__ == '__main__':
-    app.run_server(debug=True) #Math occupation does not work
+    app.run_server(debug=True)'''
