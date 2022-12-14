@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    background-color:#191919;
+    padding: 5% 10%;
+}
+
+.dropdown {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #333333;
+    margin-bottom: 40px;
+}
+
+.dropdown .text {
+    font-family: arial;
+    margin-right: 1em; 
+    font-weight: normal; 
+    font-size: 16px;
+    color: #cccccc;
+}
+
+.dropdown #dropdown {
+    font-family: arial;
+    flex: 1;
+}
+
+#map {
+    height: 41.846153846vw;
+    margin-bottom: 40px; 
+}

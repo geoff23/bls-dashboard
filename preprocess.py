@@ -64,22 +64,21 @@ def add_rpp(msa_df, bea_df=bea_df):
     msa_df = pd.merge(msa_df, rpp_df, on ='AREA_TITLE', how ='left')
     for statistic in ['A_MEAN', 'A_MEDIAN']:
         msa_df['RPP_ADJUSTED_'+statistic] = msa_df[statistic]/msa_df['RPP']*100
-    msa_df = msa_df.drop('RPP', axis = 1)
     return msa_df
 
 def add_coordinates(msa_df):
     coordinates_df = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns =['AREA_TITLE'])
     latitudes = []
     longitudes = []
+    loc = Nominatim(user_agent='GetLoc')
     for index, row in coordinates_df.iterrows():
         cities, states = row['AREA_TITLE'].split(', ')
         first_city = cities.split('-')[0]
         first_state = states.split('-')[0]
-        loc = Nominatim(user_agent='GetLoc')
         getLoc = loc.geocode(first_city+', '+first_state)
         latitudes.append(getLoc.latitude)
         longitudes.append(getLoc.longitude)
-        print(first_city, first_state, getLoc.latitude, getLoc.longitude)
+        print(first_city+', '+first_state)
     coordinates_df['LATITUDE'] = latitudes
     coordinates_df['LONGITUDE'] = longitudes
     msa_df = pd.merge(msa_df, coordinates_df, on ='AREA_TITLE', how ='left')
