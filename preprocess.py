@@ -3,49 +3,44 @@ import numpy as np
 from geopy.geocoders import Nominatim
  
 def preprocess_bls(bls_df):
-    bls_df = bls_df.replace('*','')
-    bls_df = bls_df.replace('**','')
+    bls_df = bls_df.replace('*', '')
+    bls_df = bls_df.replace('**', '')
 
-    replace_hashtag_columns = ['H_MEAN', 'H_PCT10', 'H_PCT25', 'H_MEDIAN', 'H_PCT75', 'H_PCT90']
-    for column in replace_hashtag_columns:
-        bls_df[column] = bls_df[column].str.replace('#','100')
+    for column in ['H_MEAN', 'H_PCT10', 'H_PCT25', 'H_MEDIAN', 'H_PCT75', 'H_PCT90']:
+        bls_df[column] = bls_df[column].str.replace('#', '100')
         
-    replace_hashtag_columns2 = ['A_MEAN', 'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']
-    for column in replace_hashtag_columns2:
-        bls_df[column] = bls_df[column].str.replace('#','208000')
+    for column in ['A_MEAN', 'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']:
+        bls_df[column] = bls_df[column].str.replace('#', '208000')
         
-    bls_df['PCT_RPT'] = bls_df['PCT_RPT'].str.replace('~','0.5')
+    bls_df['PCT_RPT'] = bls_df['PCT_RPT'].str.replace('~', '0.5')
 
-    remove_commas_columns = ['TOT_EMP', 'A_MEAN', 'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']
-    for column in remove_commas_columns:
-        bls_df[column] = bls_df[column].str.replace(',','')
+    for column in ['TOT_EMP', 'A_MEAN', 'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']:
+        bls_df[column] = bls_df[column].str.replace(',', '')
         
-    make_numeric_columns = ['TOT_EMP', 'EMP_PRSE', 'JOBS_1000', 'LOC_QUOTIENT',
+    for column in ['TOT_EMP', 'EMP_PRSE', 'JOBS_1000', 'LOC_QUOTIENT',
     'PCT_TOTAL', 'PCT_RPT','H_MEAN', 'A_MEAN', 'MEAN_PRSE',
     'H_PCT10', 'H_PCT25', 'H_MEDIAN', 'H_PCT75', 'H_PCT90',
-    'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']
-
-    for column in make_numeric_columns:
+    'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']:
         bls_df[column] = pd.to_numeric(bls_df[column])
     
     return bls_df
 
 def preprocess_bea(bea_df):
     bea_df = bea_df.iloc[2:]
-    bea_df = bea_df.drop('GeoFips', axis=1)
-    bea_df = bea_df.rename(columns={'GeoName': 'AREA_TITLE', '2020': 'RPP'})
-    bea_df['AREA_TITLE'] = bea_df['AREA_TITLE'].str.replace(' \(Metropolitan Statistical Area\)','', regex=True)
+    bea_df = bea_df.drop('GeoFips', axis = 1)
+    bea_df = bea_df.rename(columns = {'GeoName': 'AREA_TITLE', '2021': 'RPP'})
+    bea_df['AREA_TITLE'] = bea_df['AREA_TITLE'].str.replace(' \(Metropolitan Statistical Area\)', '', regex = True)
     bea_df['AREA_TITLE'] = bea_df['AREA_TITLE'].str.replace(' 1/', '')
     return bea_df
 
-bls_df = pd.read_csv('bls.csv', dtype = {'AREA': 'str', 'AREA_TYPE': 'str', 'OWN_CODE': 'str', 'NAICS': 'str'}, low_memory=False)
+bls_df = pd.read_csv('bls.csv', dtype = {'AREA': 'str', 'AREA_TYPE': 'str', 'OWN_CODE': 'str'}, low_memory = False)
 bls_df = preprocess_bls(bls_df)
-bea_df = pd.read_csv('bea.csv', header=3, engine='python', skipfooter=3)
+bea_df = pd.read_csv('bea.csv', header = 3, engine = 'python', skipfooter=3)
 bea_df = preprocess_bea(bea_df)
 
-def add_rpp(msa_df, bea_df=bea_df):
-    df = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns =['AREA_TITLE'])
-    rpp_df = pd.merge(df, bea_df, on ='AREA_TITLE', how ='left')
+def add_rpp(msa_df, bea_df = bea_df):
+    unique_msa = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns = ['AREA_TITLE'])
+    rpp_df = pd.merge(unique_msa, bea_df, on ='AREA_TITLE', how = 'left')
     for index1, row1 in rpp_df.iterrows():
         if np.isnan(row1['RPP']):
             max_match = 0
@@ -61,16 +56,19 @@ def add_rpp(msa_df, bea_df=bea_df):
                     if current_match > max_match:
                         rpp_df.at[index1, 'RPP'] = row2['RPP']
                         max_match = current_match
-    msa_df = pd.merge(msa_df, rpp_df, on ='AREA_TITLE', how ='left')
+    msa_df = pd.merge(msa_df, rpp_df, on = 'AREA_TITLE', how = 'left')
     for statistic in ['A_MEAN', 'A_MEDIAN']:
         msa_df['RPP_ADJUSTED_'+statistic] = msa_df[statistic]/msa_df['RPP']*100
+    for statistic in ['A_MEAN', 'A_MEDIAN']:
+        msa_df = msa_df.drop(statistic, axis = 1)
+    msa_df = msa_df.drop('RPP', axis = 1)
     return msa_df
 
 def add_coordinates(msa_df):
-    coordinates_df = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns =['AREA_TITLE'])
+    coordinates_df = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns = ['AREA_TITLE'])
+    loc = Nominatim(user_agent='GetLoc')
     latitudes = []
     longitudes = []
-    loc = Nominatim(user_agent='GetLoc')
     for index, row in coordinates_df.iterrows():
         cities, states = row['AREA_TITLE'].split(', ')
         first_city = cities.split('-')[0]
@@ -87,4 +85,4 @@ def add_coordinates(msa_df):
 msa_df = bls_df.query('AREA_TYPE == "4"')[['AREA_TITLE', 'OCC_TITLE', 'TOT_EMP', 'LOC_QUOTIENT', 'A_MEAN', 'A_MEDIAN']]
 msa_df = add_rpp(msa_df)
 msa_df = add_coordinates(msa_df)
-msa_df.to_csv('msa.csv', index=False)
+msa_df.to_csv('msa.csv', index = False)
