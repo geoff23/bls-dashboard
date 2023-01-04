@@ -1,32 +1,37 @@
 body {
     margin: 0;
     background-color:#191919;
-    padding: 5% 10%;
+    padding: 6% 9%;
 }
 
 .dropdown {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 20px 30px;
     background-color: #333333;
+    padding: 20px 30px;
     margin-bottom: 40px;
 }
 
-.dropdown .text {
+.dropdown h1 {
     font-family: arial;
-    margin-right: 1em; 
-    font-weight: normal; 
+    font-weight: normal;
     font-size: 16px;
     color: #cccccc;
+    margin-right: 10px;
 }
 
-.dropdown #dropdown {
+.dropdown a {
+    color: #a3a3cc;
+    text-decoration: none;
+}
+
+.dropdown .dash-dropdown {
     font-family: arial;
     flex: 1;
 }
 
-#map {
-    height: 41.846153846vw;
+#map, #treemap{
+    height: 39vw;
     margin-bottom: 40px; 
 }

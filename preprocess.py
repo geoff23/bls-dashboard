@@ -2,74 +2,97 @@ import pandas as pd
 import numpy as np
 from geopy.geocoders import Nominatim
  
-def preprocess_bls(bls_df):
-    bls_df = bls_df.replace('*', '')
-    bls_df = bls_df.replace('**', '')
+def get_bls():
+    df = pd.read_csv('raw_data/bls.csv', dtype = {'AREA': 'str', 'AREA_TYPE': 'str', 'OWN_CODE': 'str'}, low_memory = False)
+
+    df = df.replace('*', '')
+    df = df.replace('**', '')
 
     for column in ['H_MEAN', 'H_PCT10', 'H_PCT25', 'H_MEDIAN', 'H_PCT75', 'H_PCT90']:
-        bls_df[column] = bls_df[column].str.replace('#', '100')
-        
+        df[column] = df[column].str.replace('#', '100')
     for column in ['A_MEAN', 'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']:
-        bls_df[column] = bls_df[column].str.replace('#', '208000')
+        df[column] = df[column].str.replace('#', '208000')
         
-    bls_df['PCT_RPT'] = bls_df['PCT_RPT'].str.replace('~', '0.5')
+    df['PCT_RPT'] = df['PCT_RPT'].str.replace('~', '0.5')\
 
     for column in ['TOT_EMP', 'A_MEAN', 'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']:
-        bls_df[column] = bls_df[column].str.replace(',', '')
-        
+        df[column] = df[column].str.replace(',', '')
     for column in ['TOT_EMP', 'EMP_PRSE', 'JOBS_1000', 'LOC_QUOTIENT',
     'PCT_TOTAL', 'PCT_RPT','H_MEAN', 'A_MEAN', 'MEAN_PRSE',
     'H_PCT10', 'H_PCT25', 'H_MEDIAN', 'H_PCT75', 'H_PCT90',
     'A_PCT10', 'A_PCT25', 'A_MEDIAN', 'A_PCT75', 'A_PCT90']:
-        bls_df[column] = pd.to_numeric(bls_df[column])
+        df[column] = pd.to_numeric(df[column])
     
-    return bls_df
+    return df
 
-def preprocess_bea(bea_df):
-    bea_df = bea_df.iloc[2:]
-    bea_df = bea_df.drop('GeoFips', axis = 1)
-    bea_df = bea_df.rename(columns = {'GeoName': 'AREA_TITLE', '2021': 'RPP'})
-    bea_df['AREA_TITLE'] = bea_df['AREA_TITLE'].str.replace(' \(Metropolitan Statistical Area\)', '', regex = True)
-    bea_df['AREA_TITLE'] = bea_df['AREA_TITLE'].str.replace(' 1/', '')
-    return bea_df
+def get_state_rpp():
+    df = pd.read_csv('raw_data/state_rpp.csv', header = 3, engine = 'python', skipfooter = 3)
+    df = df.drop('GeoFips', axis = 1)
+    df = df.rename(columns = {'GeoName': 'AREA_TITLE', '2021': 'RPP'})
+    df = df.iloc[1:]
+    return df
 
-bls_df = pd.read_csv('bls.csv', dtype = {'AREA': 'str', 'AREA_TYPE': 'str', 'OWN_CODE': 'str'}, low_memory = False)
-bls_df = preprocess_bls(bls_df)
-bea_df = pd.read_csv('bea.csv', header = 3, engine = 'python', skipfooter=3)
-bea_df = preprocess_bea(bea_df)
+def get_city_rpp():
+    df = pd.read_csv('raw_data/msa_rpp.csv', header = 3, engine = 'python', skipfooter = 4)
+    df = df.drop('GeoFips', axis = 1)
+    df = df.rename(columns = {'GeoName': 'AREA_TITLE', '2021': 'RPP'})
+    df = df.iloc[2:]
+    df['AREA_TITLE'] = df['AREA_TITLE'].str.replace(' \(Metropolitan Statistical Area\)', '', regex = True)
+    df['AREA_TITLE'] = df['AREA_TITLE'].str.replace(' 2/', '')
+    return df
 
-def add_rpp(msa_df, bea_df = bea_df):
-    unique_msa = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns = ['AREA_TITLE'])
-    rpp_df = pd.merge(unique_msa, bea_df, on ='AREA_TITLE', how = 'left')
-    for index1, row1 in rpp_df.iterrows():
+def get_occupation_state():
+    bls_df = get_bls()
+    rpp_df = get_state_rpp()
+
+    df = bls_df.query('AREA_TYPE == "2"')[['AREA_TITLE', 'PRIM_STATE', 'OCC_TITLE', 'TOT_EMP', 'LOC_QUOTIENT', 'A_MEAN', 'A_MEDIAN']]
+    df = pd.merge(df, rpp_df, on ='AREA_TITLE', how = 'left')
+
+    for statistic in ['A_MEAN', 'A_MEDIAN']:
+        df['RPP_ADJUSTED_'+statistic] = df[statistic]/df['RPP']*100
+    for statistic in ['A_MEAN', 'A_MEDIAN']:
+        df = df.drop(statistic, axis = 1)
+    df = df.drop('RPP', axis = 1)
+
+    df.to_csv('processed_data/occupation_state.csv', index = False)
+
+def get_occupation_city():
+    bls_df = get_bls()
+    rpp_df = get_city_rpp()
+
+    df = bls_df.query('AREA_TYPE == "4"')[['AREA_TITLE', 'OCC_TITLE', 'TOT_EMP', 'LOC_QUOTIENT', 'A_MEAN', 'A_MEDIAN']]
+    
+    rpp_map = pd.DataFrame(df['AREA_TITLE'].unique(), columns = ['AREA_TITLE'])
+    rpp_map = pd.merge(rpp_map, rpp_df, on ='AREA_TITLE', how = 'left')
+    for index1, row1 in rpp_map.iterrows():
         if np.isnan(row1['RPP']):
             max_match = 0
             cities1, states1 = row1['AREA_TITLE'].split(', ')
             s1 = set(states1.split('-'))
             c1 = set(cities1.split('-'))
-            for index2, row2 in bea_df.iterrows():
+            for index2, row2 in rpp_df.iterrows():
                 cities2, states2 = row2['AREA_TITLE'].split(', ')
                 s2 = set(states2.split('-'))
                 c2 = set(cities2.split('-'))
                 if s1.intersection(s2) and c1.intersection(c2):
                     current_match = len(s1.intersection(s2)) + len(c1.intersection(c2))
                     if current_match > max_match:
-                        rpp_df.at[index1, 'RPP'] = row2['RPP']
+                        rpp_map.at[index1, 'RPP'] = row2['RPP']
                         max_match = current_match
-    msa_df = pd.merge(msa_df, rpp_df, on = 'AREA_TITLE', how = 'left')
-    for statistic in ['A_MEAN', 'A_MEDIAN']:
-        msa_df['RPP_ADJUSTED_'+statistic] = msa_df[statistic]/msa_df['RPP']*100
-    for statistic in ['A_MEAN', 'A_MEDIAN']:
-        msa_df = msa_df.drop(statistic, axis = 1)
-    msa_df = msa_df.drop('RPP', axis = 1)
-    return msa_df
 
-def add_coordinates(msa_df):
-    coordinates_df = pd.DataFrame(msa_df['AREA_TITLE'].unique(), columns = ['AREA_TITLE'])
-    loc = Nominatim(user_agent='GetLoc')
+    df = pd.merge(df, rpp_map, on = 'AREA_TITLE', how = 'left')
+
+    for statistic in ['A_MEAN', 'A_MEDIAN']:
+        df['RPP_ADJUSTED_'+statistic] = df[statistic]/df['RPP']*100
+    for statistic in ['A_MEAN', 'A_MEDIAN']:
+        df = df.drop(statistic, axis = 1)
+    df = df.drop('RPP', axis = 1)
+
+    coordinates_map = pd.DataFrame(df['AREA_TITLE'].unique(), columns = ['AREA_TITLE'])
+    loc = Nominatim(user_agent = 'GetLoc')
     latitudes = []
     longitudes = []
-    for index, row in coordinates_df.iterrows():
+    for index, row in coordinates_map.iterrows():
         cities, states = row['AREA_TITLE'].split(', ')
         first_city = cities.split('-')[0]
         first_state = states.split('-')[0]
@@ -77,12 +100,47 @@ def add_coordinates(msa_df):
         latitudes.append(getLoc.latitude)
         longitudes.append(getLoc.longitude)
         print(first_city+', '+first_state)
-    coordinates_df['LATITUDE'] = latitudes
-    coordinates_df['LONGITUDE'] = longitudes
-    msa_df = pd.merge(msa_df, coordinates_df, on ='AREA_TITLE', how ='left')
-    return msa_df
+    coordinates_map['LATITUDE'] = latitudes
+    coordinates_map['LONGITUDE'] = longitudes
 
-msa_df = bls_df.query('AREA_TYPE == "4"')[['AREA_TITLE', 'OCC_TITLE', 'TOT_EMP', 'LOC_QUOTIENT', 'A_MEAN', 'A_MEDIAN']]
-msa_df = add_rpp(msa_df)
-msa_df = add_coordinates(msa_df)
-msa_df.to_csv('msa.csv', index = False)
+    df = pd.merge(df, coordinates_map, on ='AREA_TITLE', how ='left')
+
+    df.to_csv('processed_data/occupation_city.csv', index = False)
+
+def get_occupation_industry():
+    bls_df = get_bls()
+
+    df = bls_df.query('AREA_TYPE == "1" & O_GROUP in ("total", "major", "detailed") & I_GROUP in ("cross-industry", "sector", "3-digit")')[['NAICS', 'NAICS_TITLE', 'I_GROUP', 'OCC_TITLE', 'TOT_EMP', 'PCT_TOTAL', 'A_MEAN', 'A_MEDIAN']]
+    
+    id_parent_map = pd.DataFrame(list(df.query('I_GROUP == "cross-industry"')['NAICS'].unique())
+    +list(df.query('I_GROUP == "sector"')['NAICS'].unique())
+    +list(df.query('I_GROUP == "3-digit"')['NAICS'].unique()), columns = ['NAICS'])
+
+    sector_ids = []
+    sector_parents = []
+    for naics in df.query('I_GROUP == "sector"')['NAICS'].unique():
+        sector_ids.append(naics)
+        sector_parents.append('0')
+
+    industry_ids = []
+    industry_parents = []
+    for naics in df.query('I_GROUP == "3-digit"')['NAICS'].unique():
+        industry_ids.append(naics[:3])
+        for sector_id in sector_ids:
+            if '-' in sector_id:
+                start, end = sector_id.split('-')
+                if naics[:2] in [str(i) for i in range(int(start), int(end)+1)]:
+                    industry_parents.append(sector_id)
+            elif naics[:2] == sector_id:
+                industry_parents.append(sector_id)
+            
+    id_parent_map['IDS'] = ['0']+sector_ids+industry_ids
+    id_parent_map['PARENTS'] = ['']+sector_parents+industry_parents
+
+    df = pd.merge(df, id_parent_map, on = 'NAICS', how = 'left')
+
+    df.to_csv('processed_data/occupation_industry.csv', index = False)
+
+df = get_bls()
+
+df.query('OCC_TITLE == "All Occupations"').to_csv('ASDFG.csv', index = False)
