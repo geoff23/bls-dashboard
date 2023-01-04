@@ -6,9 +6,11 @@ import plotly.express as px
 def get_industry(occupation):
     df = pd.read_csv('processed_data/occupation_industry.csv')
     df = df.query('OCC_TITLE == "{}"'.format(occupation)).drop('OCC_TITLE', axis = 1)
-
+    
+    df.to_csv('ASD.csv', index = False)
     #df = pd.concat([df.iloc[:1], df.iloc[1:].dropna()])
-
+    
+    '''
     for i in ['sector', '3-digit']:
         z_score_df = df.query('I_GROUP == "{}"'.format(i))
         column_names = ['TOT_EMP', 'PCT_TOTAL', 'A_MEAN', 'A_MEDIAN']
@@ -29,7 +31,7 @@ def get_industry(occupation):
     df['AVERAGE_Z_SCORE'] = z_scores
 
     return df[['NAICS_TITLE', 'TOT_EMP', 'PCT_TOTAL', 'A_MEAN', 'A_MEDIAN', 'IDS', 'PARENTS', 'AVERAGE_Z_SCORE']]
-
+    '''
 def get_map(df):
     df.to_csv('ASD.csv', index=False)
     fig = go.Figure(go.Treemap(
@@ -58,20 +60,8 @@ def get_map(df):
         paper_bgcolor = '#333333',
     )
     return fig
-df = get_industry('All Occupations')
-#df.to_csv('ASD.csv', index=False)
-fig = go.Figure(go.Treemap(
-    ids = df.IDS,
-    labels = df.NAICS_TITLE,
-    parents = df.PARENTS,
-    pathbar_textfont_size=15,
-    root_color="lightgrey"
-))
-fig.update_layout(
-    uniformtext=dict(minsize=10, mode='hide'),
-    margin = dict(t=50, l=25, r=25, b=25)
-)
-fig.show()
+df = get_industry('Financial Managers')
+
 def get_chart(df, statistic, bars, height, names):
     ranking = df[['AREA_TITLE', statistic]].sort_values(statistic, ascending = False)
     fig = px.bar(ranking.head(bars), x = statistic, y = 'AREA_TITLE', height = height)

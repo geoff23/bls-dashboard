@@ -122,25 +122,21 @@ def get_occupation_industry():
         sector_ids.append(naics)
         sector_parents.append('0')
 
-    industry_ids = []
-    industry_parents = []
+    subsector_ids = []
+    subsector_parents = []
     for naics in df.query('I_GROUP == "3-digit"')['NAICS'].unique():
-        industry_ids.append(naics[:3])
+        subsector_ids.append(naics[:3])
         for sector_id in sector_ids:
             if '-' in sector_id:
                 start, end = sector_id.split('-')
                 if naics[:2] in [str(i) for i in range(int(start), int(end)+1)]:
-                    industry_parents.append(sector_id)
+                    subsector_parents.append(sector_id)
             elif naics[:2] == sector_id:
-                industry_parents.append(sector_id)
+                subsector_parents.append(sector_id)
             
-    id_parent_map['IDS'] = ['0']+sector_ids+industry_ids
-    id_parent_map['PARENTS'] = ['']+sector_parents+industry_parents
+    id_parent_map['IDS'] = ['0']+sector_ids+subsector_ids
+    id_parent_map['PARENTS'] = ['']+sector_parents+subsector_parents
 
     df = pd.merge(df, id_parent_map, on = 'NAICS', how = 'left')
 
     df.to_csv('processed_data/occupation_industry.csv', index = False)
-
-df = get_bls()
-
-df.query('OCC_TITLE == "All Occupations"').to_csv('ASDFG.csv', index = False)

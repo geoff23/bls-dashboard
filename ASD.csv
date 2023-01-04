@@ -1,108 +1,108 @@
-NAICS_TITLE,TOT_EMP,PCT_TOTAL,A_MEAN,A_MEDIAN,IDS,PARENTS,AVERAGE_Z_SCORE
-Cross-industry,681070.0,,153460.0,131710.0,0,,
-"Agriculture, Forestry, Fishing and Hunting",,,138130.0,120010.0,11,0,-0.5796747914739093
-"Mining, Quarrying, and Oil and Gas Extraction",3010.0,0.61,169900.0,161300.0,21,0,0.3705721030835741
-Utilities,2530.0,0.47,151100.0,136850.0,22,0,-0.2692727631349908
-Construction,15750.0,0.21,135780.0,126230.0,23,0,-0.4333395405608882
-Wholesale Trade,25860.0,0.47,152080.0,132660.0,42,0,0.17929350493897464
-Information,22610.0,0.82,185040.0,166050.0,51,0,1.0930245869689434
-Finance and Insurance,204180.0,3.38,156150.0,131710.0,52,0,1.1156940094928849
-Real Estate and Rental and Leasing,15960.0,0.74,162400.0,151730.0,53,0,0.5648490562433905
-"Professional, Scientific, and Technical Services",104520.0,1.09,168660.0,158770.0,54,0,1.2145215313615028
-Management of Companies and Enterprises,80160.0,3.16,166510.0,158820.0,55,0,1.3800907620143728
-Administrative and Support and Waste Management and Remediation Services,21910.0,0.25,145690.0,128460.0,56,0,-0.14868965550443153
-Educational Services,24940.0,0.2,125790.0,119410.0,61,0,-0.6041598927107068
-Health Care and Social Assistance,28390.0,0.14,134120.0,121120.0,62,0,-0.5042136478498405
-"Arts, Entertainment, and Recreation",5060.0,0.27,128280.0,107570.0,71,0,-1.029049487235819
-Accommodation and Food Services,5490.0,0.05,116590.0,103030.0,72,0,-1.6754876789320314
-Other Services (except Public Administration),10980.0,0.29,142940.0,127240.0,81,0,-0.3170343657788852
-"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",45780.0,0.47,120830.0,123290.0,99,0,-0.29779651547665287
-Support Activities for Agriculture and Forestry,230.0,0.06,138180.0,120000.0,115,11,-0.6067856813824681
-Oil and Gas Extraction,1570.0,1.48,182430.0,164780.0,211,21,0.9977013315488001
-Mining (except Oil and Gas),320.0,0.19,173710.0,151440.0,212,21,0.41702242027833153
-Support Activities for Mining,1110.0,0.52,151110.0,144000.0,213,21,0.2556643304523357
-Utilities,2530.0,0.47,151100.0,136850.0,221,22,0.310201204395165
-Construction of Buildings,5970.0,0.37,139780.0,127260.0,236,23,0.16117224597505633
-Heavy and Civil Engineering Construction,3190.0,0.3,142640.0,128090.0,237,23,0.09746184349755634
-Specialty Trade Contractors,6600.0,0.14,128850.0,118620.0,238,23,-0.13602998263990054
-Food Manufacturing,3320.0,0.21,145990.0,127810.0,311,31-33,0.15025840462785156
-Beverage and Tobacco Product Manufacturing,840.0,0.29,153910.0,141030.0,312,31-33,0.19918744713418202
-Textile Mills,230.0,0.24,131340.0,123810.0,313,31-33,-0.6518311235059787
-Textile Product Mills,120.0,0.12,141620.0,128180.0,314,31-33,-0.545286232368304
-Apparel Manufacturing,240.0,0.27,151030.0,127690.0,315,31-33,-0.2827868743797492
-Leather and Allied Product Manufacturing,60.0,0.24,100570.0,99570.0,316,31-33,-1.9212790331786422
-Wood Product Manufacturing,550.0,0.14,129120.0,102690.0,321,31-33,-0.9003235793725811
-Paper Manufacturing,1070.0,0.31,140420.0,129770.0,322,31-33,-0.11902806856820232
-Printing and Related Support Activities,1090.0,0.3,134180.0,126540.0,323,31-33,-0.2636583455266402
-Petroleum and Coal Products Manufacturing,270.0,0.26,158180.0,141880.0,324,31-33,0.05223210430813533
-Chemical Manufacturing,4580.0,0.54,167190.0,156740.0,325,31-33,0.9152197817005788
-Plastics and Rubber Products Manufacturing,2190.0,0.31,144930.0,128750.0,326,31-33,0.06979193746806923
-Nonmetallic Mineral Product Manufacturing,740.0,0.18,132250.0,125860.0,327,31-33,-0.37976819129102307
-Primary Metal Manufacturing,1200.0,0.35,143260.0,129860.0,331,31-33,-0.052879325150999947
-Fabricated Metal Product Manufacturing,4530.0,0.33,135270.0,125830.0,332,31-33,0.015303327509059272
-Machinery Manufacturing,4820.0,0.47,145850.0,129450.0,333,31-33,0.2455299848422051
-Computer and Electronic Product Manufacturing,7210.0,0.7,170600.0,161520.0,334,31-33,1.1062382007019107
-"Electrical Equipment, Appliance, and Component Manufacturing",1910.0,0.51,152250.0,135290.0,335,31-33,0.24925650212634567
-Transportation Equipment Manufacturing,3990.0,0.25,146610.0,131140.0,336,31-33,0.2466994995834708
-Furniture and Related Product Manufacturing,720.0,0.2,134630.0,126230.0,337,31-33,-0.34097785419934984
-Miscellaneous Manufacturing,2540.0,0.43,154830.0,136650.0,339,31-33,0.36007056700637236
-"Merchant Wholesalers, Durable Goods",14440.0,0.47,150000.0,131710.0,423,42,0.5508842085734605
-"Merchant Wholesalers, Nondurable Goods",9940.0,0.49,154940.0,136310.0,424,42,0.6180986481212817
-Wholesale Electronic Markets and Agents and Brokers,1480.0,0.31,153320.0,141200.0,425,42,0.3020083451779948
-Motor Vehicle and Parts Dealers,9020.0,0.47,136860.0,124160.0,441,44-45,0.14520095138971095
-Furniture and Home Furnishings Stores,450.0,0.1,127960.0,115300.0,442,44-45,-0.7232279266920978
-Electronics and Appliance Stores,210.0,0.05,107730.0,98370.0,443,44-45,-1.5588287512057042
-Building Material and Garden Equipment and Supplies Dealers,690.0,0.05,112140.0,95800.0,444,44-45,-1.2987756920670026
-Food and Beverage Stores,180.0,0.01,126760.0,104950.0,445,44-45,-1.1097064028994124
-Health and Personal Care Stores,330.0,0.03,153810.0,138520.0,446,44-45,-0.01772285323210937
-Gasoline Stations,90.0,0.01,111190.0,102530.0,447,44-45,-1.5697675673216775
-Clothing and Clothing Accessories Stores,220.0,0.02,,,448,44-45,-1.1517808665642417
-"Sporting Goods, Hobby, Musical Instrument, and Book Stores",190.0,0.04,116760.0,99870.0,451,44-45,-1.3754314190032186
-General Merchandise Stores,40.0,0.0,133970.0,126630.0,452,44-45,-0.8991560292628328
-Miscellaneous Store Retailers,450.0,0.06,136480.0,120740.0,453,44-45,-0.4920914706113321
-Nonstore Retailers,2710.0,0.44,174280.0,163350.0,454,44-45,0.9870711926607493
-Air Transportation,500.0,0.11,154740.0,131710.0,481,48-49,-0.02740664419363034
-Rail Transportation,480.0,0.22,145300.0,127660.0,482,48-49,-0.2329843283120241
-Water Transportation,250.0,0.43,141250.0,125770.0,483,48-49,-0.44865226625634036
-Truck Transportation,1680.0,0.11,118040.0,102580.0,484,48-49,-0.8800365089923021
-Transit and Ground Passenger Transportation,340.0,0.09,119600.0,100340.0,485,48-49,-1.2030313622546824
-Pipeline Transportation,220.0,0.44,157340.0,131280.0,486,48-49,-0.15583773943804788
-Scenic and Sightseeing Transportation,,,128790.0,114460.0,487,48-49,-0.7162599407976117
-Support Activities for Transportation,2220.0,0.32,137470.0,129570.0,488,48-49,-0.02758348960885511
-Postal Service (federal government),140.0,0.02,134440.0,129030.0,491,48-49,-0.6134478813018553
-Couriers and Messengers,220.0,0.02,116190.0,103030.0,492,48-49,-1.294617601702714
-Warehousing and Storage,860.0,0.05,134380.0,126630.0,493,48-49,-0.3044700861480978
-Publishing Industries (except Internet),7650.0,0.99,180630.0,163360.0,511,51,1.2625661065596594
-Motion Picture and Sound Recording Industries,3210.0,0.96,187380.0,167320.0,512,51,1.2229975903435617
-Broadcasting (except Internet),1040.0,0.43,171750.0,155720.0,515,51,0.6752510249178404
-Telecommunications,2860.0,0.43,157970.0,135600.0,517,51,0.41005540290684
-"Data Processing, Hosting, and Related Services",4170.0,1.1,188190.0,167800.0,518,51,1.2881762482050292
-Other Information Services,3690.0,1.02,213310.0,208000.0,519,51,1.9677619270539772
-Monetary Authorities-Central Bank,740.0,3.56,194300.0,177850.0,521,52,1.1428886537612166
-Credit Intermediation and Related Activities,115820.0,4.42,133480.0,119870.0,522,52,0.5098446537935765
-"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",43140.0,4.5,205170.0,203360.0,523,52,2.310296572185389
-Insurance Carriers and Related Activities,43530.0,1.8,166520.0,160010.0,524,52,1.3801806542148467
-"Funds, Trusts, and Other Financial Vehicles",950.0,4.51,189380.0,168490.0,525,52,1.0263869296365176
-Real Estate,14120.0,0.84,165390.0,152350.0,531,53,1.050343065335661
-Rental and Leasing Services,1500.0,0.32,134960.0,125130.0,532,53,-0.2127903516389992
-Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),340.0,1.76,159410.0,149620.0,533,53,0.22066500702698152
-"Professional, Scientific, and Technical Services",104520.0,1.09,168660.0,158770.0,541,54,1.5595967567731612
-Management of Companies and Enterprises,80160.0,3.16,166510.0,158820.0,551,55,1.4819669453414077
-Administrative and Support Services,21170.0,0.25,146110.0,128790.0,561,56,0.5226564182486498
-Waste Management and Remediation Services,740.0,0.16,133860.0,120740.0,562,56,-0.4381327013608948
-Educational Services,24940.0,0.2,125790.0,119410.0,611,61,0.08095216917715424
-Ambulatory Health Care Services,9820.0,0.13,138680.0,126420.0,621,62,0.22627849569106076
-Hospitals,10380.0,0.17,150980.0,128830.0,622,62,0.4566785628633436
-Nursing and Residential Care Facilities,2670.0,0.09,115300.0,99660.0,623,62,-0.8999328237973238
-Social Assistance,5520.0,0.14,103420.0,96170.0,624,62,-1.0651974830218318
-"Performing Arts, Spectator Sports, and Related Industries",1460.0,0.44,149400.0,127650.0,711,71,0.039536950778868256
-"Museums, Historical Sites, and Similar Institutions",750.0,0.57,133740.0,120230.0,712,71,-0.44605725370980903
-"Amusement, Gambling, and Recreation Industries",2850.0,0.2,115980.0,102240.0,713,71,-0.8230461749250667
-Accommodation,4700.0,0.33,118540.0,103030.0,721,72,-0.6649146244212295
-Food Services and Drinking Places,790.0,0.01,105090.0,103200.0,722,72,-1.260633499588865
-Repair and Maintenance,1080.0,0.08,126730.0,126630.0,811,81,-0.3859763167126937
-Personal and Laundry Services,590.0,0.04,138330.0,127240.0,812,81,-0.30509312336770417
-"Religious, Grantmaking, Civic, Professional, and Similar Organizations",9310.0,0.77,145110.0,127680.0,813,81,0.33295447165195796
-"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",45780.0,0.47,120830.0,123290.0,999,99,0.17630916178680778
-Manufacturing,42220.0,0.35,151070.0,131710.0,31-33,0,0.18817521479378366
-Retail Trade,14560.0,0.1,141420.0,126450.0,44-45,0,-0.5373398259761483
+NAICS,NAICS_TITLE,I_GROUP,TOT_EMP,PCT_TOTAL,A_MEAN,A_MEDIAN,IDS,PARENTS
+000000,Cross-industry,cross-industry,681070.0,,153460.0,131710.0,0,
+11,"Agriculture, Forestry, Fishing and Hunting",sector,,,138130.0,120010.0,11,0
+21,"Mining, Quarrying, and Oil and Gas Extraction",sector,3010.0,0.61,169900.0,161300.0,21,0
+22,Utilities,sector,2530.0,0.47,151100.0,136850.0,22,0
+23,Construction,sector,15750.0,0.21,135780.0,126230.0,23,0
+42,Wholesale Trade,sector,25860.0,0.47,152080.0,132660.0,42,0
+51,Information,sector,22610.0,0.82,185040.0,166050.0,51,0
+52,Finance and Insurance,sector,204180.0,3.38,156150.0,131710.0,52,0
+53,Real Estate and Rental and Leasing,sector,15960.0,0.74,162400.0,151730.0,53,0
+54,"Professional, Scientific, and Technical Services",sector,104520.0,1.09,168660.0,158770.0,54,0
+55,Management of Companies and Enterprises,sector,80160.0,3.16,166510.0,158820.0,55,0
+56,Administrative and Support and Waste Management and Remediation Services,sector,21910.0,0.25,145690.0,128460.0,56,0
+61,Educational Services,sector,24940.0,0.2,125790.0,119410.0,61,0
+62,Health Care and Social Assistance,sector,28390.0,0.14,134120.0,121120.0,62,0
+71,"Arts, Entertainment, and Recreation",sector,5060.0,0.27,128280.0,107570.0,71,0
+72,Accommodation and Food Services,sector,5490.0,0.05,116590.0,103030.0,72,0
+81,Other Services (except Public Administration),sector,10980.0,0.29,142940.0,127240.0,81,0
+99,"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",sector,45780.0,0.47,120830.0,123290.0,99,0
+115000,Support Activities for Agriculture and Forestry,3-digit,230.0,0.06,138180.0,120000.0,115,11
+211000,Oil and Gas Extraction,3-digit,1570.0,1.48,182430.0,164780.0,211,21
+212000,Mining (except Oil and Gas),3-digit,320.0,0.19,173710.0,151440.0,212,21
+213000,Support Activities for Mining,3-digit,1110.0,0.52,151110.0,144000.0,213,21
+221000,Utilities,3-digit,2530.0,0.47,151100.0,136850.0,221,22
+236000,Construction of Buildings,3-digit,5970.0,0.37,139780.0,127260.0,236,23
+237000,Heavy and Civil Engineering Construction,3-digit,3190.0,0.3,142640.0,128090.0,237,23
+238000,Specialty Trade Contractors,3-digit,6600.0,0.14,128850.0,118620.0,238,23
+311000,Food Manufacturing,3-digit,3320.0,0.21,145990.0,127810.0,311,31-33
+312000,Beverage and Tobacco Product Manufacturing,3-digit,840.0,0.29,153910.0,141030.0,312,31-33
+313000,Textile Mills,3-digit,230.0,0.24,131340.0,123810.0,313,31-33
+314000,Textile Product Mills,3-digit,120.0,0.12,141620.0,128180.0,314,31-33
+315000,Apparel Manufacturing,3-digit,240.0,0.27,151030.0,127690.0,315,31-33
+316000,Leather and Allied Product Manufacturing,3-digit,60.0,0.24,100570.0,99570.0,316,31-33
+321000,Wood Product Manufacturing,3-digit,550.0,0.14,129120.0,102690.0,321,31-33
+322000,Paper Manufacturing,3-digit,1070.0,0.31,140420.0,129770.0,322,31-33
+323000,Printing and Related Support Activities,3-digit,1090.0,0.3,134180.0,126540.0,323,31-33
+324000,Petroleum and Coal Products Manufacturing,3-digit,270.0,0.26,158180.0,141880.0,324,31-33
+325000,Chemical Manufacturing,3-digit,4580.0,0.54,167190.0,156740.0,325,31-33
+326000,Plastics and Rubber Products Manufacturing,3-digit,2190.0,0.31,144930.0,128750.0,326,31-33
+327000,Nonmetallic Mineral Product Manufacturing,3-digit,740.0,0.18,132250.0,125860.0,327,31-33
+331000,Primary Metal Manufacturing,3-digit,1200.0,0.35,143260.0,129860.0,331,31-33
+332000,Fabricated Metal Product Manufacturing,3-digit,4530.0,0.33,135270.0,125830.0,332,31-33
+333000,Machinery Manufacturing,3-digit,4820.0,0.47,145850.0,129450.0,333,31-33
+334000,Computer and Electronic Product Manufacturing,3-digit,7210.0,0.7,170600.0,161520.0,334,31-33
+335000,"Electrical Equipment, Appliance, and Component Manufacturing",3-digit,1910.0,0.51,152250.0,135290.0,335,31-33
+336000,Transportation Equipment Manufacturing,3-digit,3990.0,0.25,146610.0,131140.0,336,31-33
+337000,Furniture and Related Product Manufacturing,3-digit,720.0,0.2,134630.0,126230.0,337,31-33
+339000,Miscellaneous Manufacturing,3-digit,2540.0,0.43,154830.0,136650.0,339,31-33
+423000,"Merchant Wholesalers, Durable Goods",3-digit,14440.0,0.47,150000.0,131710.0,423,42
+424000,"Merchant Wholesalers, Nondurable Goods",3-digit,9940.0,0.49,154940.0,136310.0,424,42
+425000,Wholesale Electronic Markets and Agents and Brokers,3-digit,1480.0,0.31,153320.0,141200.0,425,42
+441000,Motor Vehicle and Parts Dealers,3-digit,9020.0,0.47,136860.0,124160.0,441,44-45
+442000,Furniture and Home Furnishings Stores,3-digit,450.0,0.1,127960.0,115300.0,442,44-45
+443000,Electronics and Appliance Stores,3-digit,210.0,0.05,107730.0,98370.0,443,44-45
+444000,Building Material and Garden Equipment and Supplies Dealers,3-digit,690.0,0.05,112140.0,95800.0,444,44-45
+445000,Food and Beverage Stores,3-digit,180.0,0.01,126760.0,104950.0,445,44-45
+446000,Health and Personal Care Stores,3-digit,330.0,0.03,153810.0,138520.0,446,44-45
+447000,Gasoline Stations,3-digit,90.0,0.01,111190.0,102530.0,447,44-45
+448000,Clothing and Clothing Accessories Stores,3-digit,220.0,0.02,,,448,44-45
+451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",3-digit,190.0,0.04,116760.0,99870.0,451,44-45
+452000,General Merchandise Stores,3-digit,40.0,0.0,133970.0,126630.0,452,44-45
+453000,Miscellaneous Store Retailers,3-digit,450.0,0.06,136480.0,120740.0,453,44-45
+454000,Nonstore Retailers,3-digit,2710.0,0.44,174280.0,163350.0,454,44-45
+481000,Air Transportation,3-digit,500.0,0.11,154740.0,131710.0,481,48-49
+482000,Rail Transportation,3-digit,480.0,0.22,145300.0,127660.0,482,48-49
+483000,Water Transportation,3-digit,250.0,0.43,141250.0,125770.0,483,48-49
+484000,Truck Transportation,3-digit,1680.0,0.11,118040.0,102580.0,484,48-49
+485000,Transit and Ground Passenger Transportation,3-digit,340.0,0.09,119600.0,100340.0,485,48-49
+486000,Pipeline Transportation,3-digit,220.0,0.44,157340.0,131280.0,486,48-49
+487000,Scenic and Sightseeing Transportation,3-digit,,,128790.0,114460.0,487,48-49
+488000,Support Activities for Transportation,3-digit,2220.0,0.32,137470.0,129570.0,488,48-49
+491000,Postal Service (federal government),3-digit,140.0,0.02,134440.0,129030.0,491,48-49
+492000,Couriers and Messengers,3-digit,220.0,0.02,116190.0,103030.0,492,48-49
+493000,Warehousing and Storage,3-digit,860.0,0.05,134380.0,126630.0,493,48-49
+511000,Publishing Industries (except Internet),3-digit,7650.0,0.99,180630.0,163360.0,511,51
+512000,Motion Picture and Sound Recording Industries,3-digit,3210.0,0.96,187380.0,167320.0,512,51
+515000,Broadcasting (except Internet),3-digit,1040.0,0.43,171750.0,155720.0,515,51
+517000,Telecommunications,3-digit,2860.0,0.43,157970.0,135600.0,517,51
+518000,"Data Processing, Hosting, and Related Services",3-digit,4170.0,1.1,188190.0,167800.0,518,51
+519000,Other Information Services,3-digit,3690.0,1.02,213310.0,208000.0,519,51
+521000,Monetary Authorities-Central Bank,3-digit,740.0,3.56,194300.0,177850.0,521,52
+522000,Credit Intermediation and Related Activities,3-digit,115820.0,4.42,133480.0,119870.0,522,52
+523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",3-digit,43140.0,4.5,205170.0,203360.0,523,52
+524000,Insurance Carriers and Related Activities,3-digit,43530.0,1.8,166520.0,160010.0,524,52
+525000,"Funds, Trusts, and Other Financial Vehicles",3-digit,950.0,4.51,189380.0,168490.0,525,52
+531000,Real Estate,3-digit,14120.0,0.84,165390.0,152350.0,531,53
+532000,Rental and Leasing Services,3-digit,1500.0,0.32,134960.0,125130.0,532,53
+533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),3-digit,340.0,1.76,159410.0,149620.0,533,53
+541000,"Professional, Scientific, and Technical Services",3-digit,104520.0,1.09,168660.0,158770.0,541,54
+551000,Management of Companies and Enterprises,3-digit,80160.0,3.16,166510.0,158820.0,551,55
+561000,Administrative and Support Services,3-digit,21170.0,0.25,146110.0,128790.0,561,56
+562000,Waste Management and Remediation Services,3-digit,740.0,0.16,133860.0,120740.0,562,56
+611000,Educational Services,3-digit,24940.0,0.2,125790.0,119410.0,611,61
+621000,Ambulatory Health Care Services,3-digit,9820.0,0.13,138680.0,126420.0,621,62
+622000,Hospitals,3-digit,10380.0,0.17,150980.0,128830.0,622,62
+623000,Nursing and Residential Care Facilities,3-digit,2670.0,0.09,115300.0,99660.0,623,62
+624000,Social Assistance,3-digit,5520.0,0.14,103420.0,96170.0,624,62
+711000,"Performing Arts, Spectator Sports, and Related Industries",3-digit,1460.0,0.44,149400.0,127650.0,711,71
+712000,"Museums, Historical Sites, and Similar Institutions",3-digit,750.0,0.57,133740.0,120230.0,712,71
+713000,"Amusement, Gambling, and Recreation Industries",3-digit,2850.0,0.2,115980.0,102240.0,713,71
+721000,Accommodation,3-digit,4700.0,0.33,118540.0,103030.0,721,72
+722000,Food Services and Drinking Places,3-digit,790.0,0.01,105090.0,103200.0,722,72
+811000,Repair and Maintenance,3-digit,1080.0,0.08,126730.0,126630.0,811,81
+812000,Personal and Laundry Services,3-digit,590.0,0.04,138330.0,127240.0,812,81
+813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",3-digit,9310.0,0.77,145110.0,127680.0,813,81
+999000,"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",3-digit,45780.0,0.47,120830.0,123290.0,999,99
+31-33,Manufacturing,sector,42220.0,0.35,151070.0,131710.0,31-33,0
+44-45,Retail Trade,sector,14560.0,0.1,141420.0,126450.0,44-45,0
