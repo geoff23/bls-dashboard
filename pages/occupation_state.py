@@ -3,64 +3,50 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
-def get_industry(occupation):
-    df = pd.read_csv('processed_data/occupation_industry.csv')
-    df = df.query('OCC_TITLE == "{}"'.format(occupation)).drop('OCC_TITLE', axis = 1)
-    
-    df.to_csv('ASD.csv', index = False)
-    #df = pd.concat([df.iloc[:1], df.iloc[1:].dropna()])
-    
-    '''
-    for i in ['sector', '3-digit']:
-        z_score_df = df.query('I_GROUP == "{}"'.format(i))
-        column_names = ['TOT_EMP', 'PCT_TOTAL', 'A_MEAN', 'A_MEDIAN']
-        for column_name in column_names:
-            series = np.log(z_score_df[column_name])
-            z_score_df[column_name+'_Z_SCORE'] = (series - series.mean())/series.std()
-        z_score_df['AVERAGE_Z_SCORE'] = z_score_df[[column_name+'_Z_SCORE' for column_name in column_names]].mean(axis = 1)
-        df = pd.merge(df, z_score_df[['NAICS', 'AVERAGE_Z_SCORE']], on = 'NAICS', how = 'left')
+def get_states(occupation):
+    occ_state_df = pd.read_csv('processed_data/occupation_state.csv')
 
-    z_scores = []
-    for index, row in df.iterrows():
-        if not np.isnan(row['AVERAGE_Z_SCORE_x']):
-            z_scores.append(row['AVERAGE_Z_SCORE_x'])
-        elif not np.isnan(row['AVERAGE_Z_SCORE_y']):
-            z_scores.append(row['AVERAGE_Z_SCORE_y'])
-        else:
-            z_scores.append(np.nan)
-    df['AVERAGE_Z_SCORE'] = z_scores
+    df = occ_state_df.query('OCC_TITLE == "{}"'.format(occupation))
+    df = df.drop('OCC_TITLE', axis = 1)
+    
+    df = df.dropna()
+    column_names = ['TOT_EMP', 'LOC_QUOTIENT', 'RPP_ADJUSTED_A_MEAN', 'RPP_ADJUSTED_A_MEDIAN']
+    for column_name in column_names:
+        series = np.log(df[column_name])
+        df[column_name+'_Z_SCORE'] = (series - series.mean())/series.std()
+    df['AVERAGE_Z_SCORE'] = df[[column_name+'_Z_SCORE' for column_name in column_names]].mean(axis = 1)
+    for column_name in column_names:
+        df = df.drop(column_name+'_Z_SCORE', axis=1)
+    return df
 
-    return df[['NAICS_TITLE', 'TOT_EMP', 'PCT_TOTAL', 'A_MEAN', 'A_MEDIAN', 'IDS', 'PARENTS', 'AVERAGE_Z_SCORE']]
-    '''
 def get_map(df):
-    df.to_csv('ASD.csv', index=False)
-    fig = go.Figure(go.Treemap(
-        branchvalues = 'remainder',
-        labels = df['NAICS_TITLE'],
-        values = df['TOT_EMP'],
-        parents = ['']+df['PARENTS'][1:],
-        ids = df['IDS'],
-        marker = dict(
-            colors = df['AVERAGE_Z_SCORE'],
-            colorscale = 'magma',
+    fig = go.Figure(data = go.Choropleth(
+            locations = df['PRIM_STATE'],
+            z = df['AVERAGE_Z_SCORE'],
+            locationmode = 'USA-states',
+            colorscale = 'viridis',
+            text = df['AREA_TITLE']
+            +'<br>Average z-score: '+df['AVERAGE_Z_SCORE'].round(2).astype(str)
+            +'<br>Total employment: '+df['TOT_EMP'].astype(int).astype(str)
+            +'<br>Location quotient: '+df['LOC_QUOTIENT'].round(2).astype(str)
+            +'<br>RPP-adjusted mean annual wage: '+df['RPP_ADJUSTED_A_MEAN'].astype(int).astype(str)
+            +'<br>RPP-adjusted annual median wage: '+df['RPP_ADJUSTED_A_MEDIAN'].astype(int).astype(str),
             colorbar = dict(
                 title = dict(text = 'Average Z-Score', font = dict(color = '#cccccc')),
                 tickfont = dict(color = '#cccccc')
             )
-        ),
-        hovertemplate = df['NAICS_TITLE']
-        +'<br>Average z-score: '+df['AVERAGE_Z_SCORE'].round(2).astype(str)
-        +'<br>Total employment: '+df['TOT_EMP'].astype(int).astype(str)
-        +'<br>Percentage of industry employment: '+df['PCT_TOTAL'].round(2).astype(str)
-        +'<br>Mean annual wage: '+df['A_MEAN'].astype(int).astype(str)
-        +'<br>Annual median wage: '+df['A_MEDIAN'].astype(int).astype(str)+'<extra></extra>'
-    ))
-  
+        ))
+
     fig.update_layout(
+        geo_scope = 'usa',
         paper_bgcolor = '#333333',
+        geo_bgcolor = '#333333',
+        geo_lakecolor = '#333333',
+        geo_landcolor = '#4d4d4d',
+        geo_subunitcolor = '#666666',
+        margin = dict(l = 20, r = 20, t = 20, b = 20)
     )
     return fig
-df = get_industry('Financial Managers')
 
 def get_chart(df, statistic, bars, height, names):
     ranking = df[['AREA_TITLE', statistic]].sort_values(statistic, ascending = False)
@@ -117,7 +103,7 @@ def generate_figures(occupation):
     return figs
 
 
-'''import dash
+import dash
 from dash import html, dcc, callback, Input, Output
 
 dash.register_page(
@@ -143,10 +129,10 @@ layout = html.Div([
         children = [
             html.H1(
                 className = 'text', 
-                children = ['Best ', dcc.Link('States', href='/best-occupations'), ' for']
+                children = ['Best ', dcc.Link('States', href='/occupations/best-metropolitan-areas'), ' for']
                 
             ),
-            dcc.Dropdown(pd.read_csv('processed_data/occ_msa.csv')['OCC_TITLE'].unique(), 'Data Scientists', id = 'occ-state-dropdown')
+            dcc.Dropdown(pd.read_csv('processed_data/occupation_state.csv')['OCC_TITLE'].unique(), 'Data Scientists', id = 'occ-state-dropdown')
         ]
     ),
     dcc.Graph(figure = figs[0], id = 'occ-state-map'),
@@ -170,4 +156,4 @@ layout = html.Div([
         ], 
         style = {'display': 'flex', 'flex-direction': 'row'}
     )
-])'''
+])

@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 def get_metropolitan_areas(occupation):
-    occ_msa_df = pd.read_csv('processed_data/occ_msa.csv')
+    occ_msa_df = pd.read_csv('processed_data/occupation_city.csv')
 
     df = occ_msa_df.query('OCC_TITLE == "{}"'.format(occupation))
     df = df.drop('OCC_TITLE', axis = 1)
@@ -140,7 +140,7 @@ layout = html.Div([
                 children = ['Best ', dcc.Link('Metropolitan Areas', href='/occupations/best-states'), ' for']
                 
             ),
-            dcc.Dropdown(pd.read_csv('processed_data/occ_msa.csv')['OCC_TITLE'].unique(), 'Data Scientists', id = 'dropdown')
+            dcc.Dropdown(pd.read_csv('processed_data/occupation_city.csv')['OCC_TITLE'].unique(), 'Data Scientists', id = 'dropdown')
         ]
     ),
     dcc.Graph(figure = figs[0], id = 'map'),
